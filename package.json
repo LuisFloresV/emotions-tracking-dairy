@@ -1,0 +1,29 @@
+{
+  "name": "emotions-tracking-diary",
+  "version": "1.0.0",
+  "description": "A diary to keep track of your daily emotions",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/app.js",
+    "migrate": "knex --knexfile src/db/knexfile migrate:latest",
+    "rollback": "knex --knexfile src/db/knexfile migrate:rollback",
+    "migrate-create": "knex --knexfile src/db/knexfile migrate:make",
+    "seed": "knex seed:run "
+  },
+  "author": "Luis F.",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "knex": "^1.0.4",
+    "nodemon": "^2.0.15",
+    "objection": "^3.0.1",
+    "pg": "^8.7.3"
+  }
+}
