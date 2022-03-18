@@ -1,6 +1,4 @@
-const express = require('express');
-
-const router = express.Router();
+const router = require('express-promise-router')();
 const { apiUrl } = require('../util/env');
 
 router.use(`${apiUrl}/`, require('./entries'));

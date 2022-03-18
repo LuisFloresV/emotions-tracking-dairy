@@ -14,7 +14,6 @@ class Emotion extends Model {
       required: ['name', 'id'],
 
       properties: {
-        id: { type: 'uuid' },
         name: { type: 'string', minLength: 1, maxLength: 50 },
       },
     };

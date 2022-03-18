@@ -11,12 +11,10 @@ class Entry extends Model {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['description', 'id', 'emotion_id'],
+      required: ['description', 'id'],
 
       properties: {
-        id: { type: 'uuid' },
         description: { type: 'string', minLength: 1, maxLength: 350 },
-        emotion_id: { type: 'uuid' },
       },
     };
   }
@@ -25,7 +23,7 @@ class Entry extends Model {
     // eslint-disable-next-line global-require
     const Emotion = require('./emotion');
     return {
-      emotions: {
+      emotion: {
         relation: Model.BelongsToOneRelation,
         modelClass: Emotion,
         join: {
