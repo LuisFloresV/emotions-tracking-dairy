@@ -1,8 +1,12 @@
 const Emotion = require('../models/emotion');
 const { addUuid } = require('../../util/index');
+const { emotionsAllowedParams } = require('../../constants/index');
+const { buildQueryParams, removeNoAllowedParams } = require('../../util');
 
-const find = async () => {
+const find = async (params) => {
   const query = Emotion.query();
+  removeNoAllowedParams(params, emotionsAllowedParams);
+  buildQueryParams(params, query);
   return query;
 };
 
