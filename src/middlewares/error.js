@@ -1,5 +1,6 @@
+/* eslint-disable no-param-reassign */
 const HTTP_STATUS = require('http-status');
-const { UniqueViolationError } = require('objection');
+const { UniqueViolationError, ValidationError } = require('objection');
 const { nodeEnv } = require('../util/env');
 const AppError = require('../util/appError');
 
@@ -8,11 +9,22 @@ const handleUniqueFieldError = (error) => {
   return new AppError(message, 400);
 };
 
+const handleValidationError = (error) => {
+  const message = `${error.message}`;
+  return new AppError(message, 400);
+};
+
 const sendErrorDev = (err, res) => res.status(err.statusCode).json({
   status: err.status,
   error: err,
   message: err.message,
   stack: err.stack,
+});
+
+const sendErrorTest = (err, res) => res.status(err.statusCode).json({
+  status: err.status,
+  error: err,
+  message: err.message,
 });
 
 const sendErrorProd = (err, res) => {
@@ -32,17 +44,23 @@ const sendErrorProd = (err, res) => {
   }
 };
 
+// eslint-disable-next-line no-unused-vars
 module.exports = (err, req, res, next) => {
-  let error = err;
-  error.statusCode = err.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;
-  error.status = err.status || 'error';
+  err.statusCode = err.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;
+  err.status = err.status || 'error';
 
-  if (error instanceof UniqueViolationError) {
-    error = handleUniqueFieldError(error);
+  let error = Object.create(err);
+  if (err instanceof UniqueViolationError) {
+    error = handleUniqueFieldError(err);
+  }
+  if (error instanceof ValidationError) {
+    error = handleValidationError(error);
   }
 
   if (nodeEnv === 'development') {
     sendErrorDev(error, res);
+  } else if (nodeEnv === 'test') {
+    sendErrorTest(error, res);
   } else if (nodeEnv === 'production') {
     sendErrorProd(error, res);
   }
