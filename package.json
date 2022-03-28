@@ -4,19 +4,25 @@
   "description": "A diary to keep track of your daily emotions",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js",
-    "migrate": "knex --knexfile src/db/knexfile migrate:latest",
+    "test": "NODE_PORT=3001 NODE_ENV=test mocha 'src/test/**/*.test.js' --timeout 10000 --exit",
+    "start": "NODE_ENV=development nodemon src/app.js",
+    "migrate-dev": "knex --knexfile src/db/knexfile migrate:latest",
+    "migrate-test": "NODE_ENV=test knex --knexfile src/db/knexfile migrate:latest",
     "rollback": "knex --knexfile src/db/knexfile migrate:rollback",
+    "rollback-test": "NODE_ENV=test knex --knexfile src/db/knexfile migrate:rollback",
+
     "migrate-create": "knex --knexfile src/db/knexfile migrate:make",
     "seed": "knex seed:run "
   },
   "author": "Luis F.",
   "license": "MIT",
   "devDependencies": {
+    "chai": "^4.3.6",
     "eslint": "^8.11.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.4"
+    "eslint-plugin-import": "^2.25.4",
+    "mocha": "^9.2.2",
+    "supertest": "^6.2.2"
   },
   "dependencies": {
     "dotenv": "^16.0.0",

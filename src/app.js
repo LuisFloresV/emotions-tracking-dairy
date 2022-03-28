@@ -1,7 +1,7 @@
 const express = require('express');
+const { port } = require('./util/env');
 
 const app = express();
-const { port } = require('./util/env');
 const router = require('./controllers');
 const errorHandler = require('./middlewares/error');
 
@@ -10,7 +10,6 @@ app.use(router);
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`App started on port ${port}`);
-});
+app.listen(port);
+
+module.exports = app;
