@@ -5,13 +5,12 @@ Model.knex(db);
 
 class Emotion extends Model {
   static get tableName() {
-    return 'emotions';
+    return 'emotion';
   }
 
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['name', 'id'],
 
       properties: {
         name: { type: 'string', minLength: 1, maxLength: 50 },

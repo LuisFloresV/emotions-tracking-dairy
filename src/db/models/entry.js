@@ -1,17 +1,18 @@
 const { Model } = require('objection');
 const db = require('../index');
+const Emotion = require('./emotion');
 
 Model.knex(db);
 
 class Entry extends Model {
   static get tableName() {
-    return 'entries';
+    return 'entry';
   }
 
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['description', 'id'],
+      required: ['id', 'description'],
 
       properties: {
         description: { type: 'string', minLength: 1, maxLength: 350 },
@@ -20,15 +21,14 @@ class Entry extends Model {
   }
 
   static get relationMappings() {
-    // eslint-disable-next-line global-require
-    const Emotion = require('./emotion');
     return {
       emotion: {
         relation: Model.BelongsToOneRelation,
+        // eslint-disable-next-line global-require
         modelClass: Emotion,
         join: {
-          from: 'entries.emotion_id',
-          to: 'emotions.id',
+          from: 'entry.emotionId',
+          to: 'emotion.id',
         },
       },
     };
