@@ -49,19 +49,18 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;
   err.status = err.status || 'error';
 
-  let error = Object.create(err);
   if (err instanceof UniqueViolationError) {
-    error = handleUniqueFieldError(err);
+    err = handleUniqueFieldError(err);
   }
-  if (error instanceof ValidationError) {
-    error = handleValidationError(error);
+  if (err instanceof ValidationError) {
+    err = handleValidationError(err);
   }
 
   if (nodeEnv === 'development') {
-    sendErrorDev(error, res);
+    sendErrorDev(err, res);
   } else if (nodeEnv === 'test') {
-    sendErrorTest(error, res);
+    sendErrorTest(err, res);
   } else if (nodeEnv === 'production') {
-    sendErrorProd(error, res);
+    sendErrorProd(err, res);
   }
 };
