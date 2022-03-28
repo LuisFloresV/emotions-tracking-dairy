@@ -1,4 +1,4 @@
-let env = process.env.APP_ENV;
+let env = process.env.NODE_ENV;
 
 if (env === undefined) {
   env = 'development';
